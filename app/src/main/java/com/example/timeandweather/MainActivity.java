@@ -34,7 +34,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static Context mContext;
-    public static String weatherInfo="1";
+    //天气
+    public static String weatherInfo="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,20 +45,24 @@ public class MainActivity extends AppCompatActivity {
         tvWeather = (TextView) findViewById(R.id.myWeather);
         tvDateMore = (TextView) findViewById(R.id.mydateMore);
         mContext = getApplicationContext();
+        //全屏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //屏幕常亮
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-
+        //高德需要隐私协议
         ServiceSettings.updatePrivacyShow(this, true, true);
         ServiceSettings.updatePrivacyAgree(this,true);
-
+        //更新页面文字
         new TimeThread().start(); //启动新的线程
+        //第一次启动 获取下天气
         try {
             GetWeather();
         } catch (AMapException e) {
             e.printStackTrace();
         }
+        //更新天气
         new OtherThread().start(); //启动新的线程
     }
 
@@ -106,14 +111,18 @@ public class MainActivity extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
+                    //时间
                     long sysTime = System.currentTimeMillis();
-                    CharSequence sysTimeStr = DateFormat.format("yyyy-MM-dd hh:mm:ss", sysTime);
+                    CharSequence sysTimeStr = DateFormat.format("hh:mm:ss", sysTime);
                     Date date=new Date(sysTime);
+                    //星期
+                    SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd EEEE");
+                    tvWeather.setText(weatherInfo);
+                    //农历
                     Calendar calendar=Calendar.getInstance();
                     Lunar lunar = new Lunar(calendar);
-                    SimpleDateFormat format=new SimpleDateFormat("EEEE");
-                    tvWeather.setText(weatherInfo);
-                    tvDateMore.setText(lunar.toString()+"  "+format.format(date));
+                    //文字变化
+                    tvDateMore.setText(format.format(date)+"  "+lunar.toString());
                     tvTime.setText(sysTimeStr); //更新时间
                 break;
                 case 2:

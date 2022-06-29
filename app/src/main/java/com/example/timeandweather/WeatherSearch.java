@@ -21,7 +21,7 @@ import com.amap.api.services.weather.WeatherSearchQuery;
 import java.util.List;
 public class WeatherSearch extends com.amap.api.services.weather.WeatherSearch implements com.amap.api.services.weather.WeatherSearch.OnWeatherSearchListener{
     private Context context;
-    private String city="苏州";
+    private String city="吴中区";
     private WeatherSearchQuery mquery;
     private WeatherSearch mweathersearch;
     private LocalWeatherLive weatherlive;
@@ -50,7 +50,7 @@ public class WeatherSearch extends com.amap.api.services.weather.WeatherSearch i
             Log.i("thisApp","查询成功了");
             if (weatherLiveResult != null && weatherLiveResult.getLiveResult() != null) {
                 weatherlive = weatherLiveResult.getLiveResult();
-                MainActivity.weatherInfo =city+":"+weatherlive.getWeather() +","+weatherlive.getTemperature()+"°," +weatherlive.getWindDirection() + "风" + weatherlive.getWindPower() + "级,"
+                MainActivity.weatherInfo =city+"|"+weatherlive.getWeather() +"|"+weatherlive.getTemperature()+"℃|" +weatherlive.getWindDirection() + "风" + weatherlive.getWindPower() + "级|"
                         +"湿度:" + weatherlive.getHumidity() + "%";
 
             } else {
